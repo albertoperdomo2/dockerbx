@@ -14,6 +14,13 @@
         body:not(.dark-mode) button {
             color: #000000;
         }
+        body:(.dark-mode) h1,
+        body:(.dark-mode) h2,
+        body:(.dark-mode) h3,
+        body:(.dark-mode) h4,
+        body:(.dark-mode) button {
+            color: #ffffff;
+        }
         .header {
             display: flex;
             justify-content: space-between;
@@ -74,7 +81,7 @@
             <h1>dockerbx</h1>
             <button id="mode-toggle">dark</button>
         </div>
-        <p>a Docker-based alternative to toolbx, designed for macOS users who want to create and manage isolated development environments easily</p>
+        <p>a Docker-based alternative to <a href="https://containertoolbx.org/" role="button">toolbx</a>, designed for macOS users who want to create and manage isolated development environments easily</p>
         <div style="margin-top: 40px; margin-bottom: 40px;">
             <h2>installation</h2>
             <p>to install dockerbx go to the <a href="https://github.com/albertoperdomo2/dockerbx/releases" role="button">releases page</a> and download the binary for your system</p>
@@ -89,6 +96,7 @@
                 <li>run commands in containers without entering them</li>
                 <li>update container images and packages</li>
                 <li>seamless integration with the host file system</li>
+                <li><b>feature requests are more than welcomed by filling an <a href="https://github.com/albertoperdomo2/dockerbx/issues/new/choose" role="button">issue</a></b></li>
             </ul>
         </div>
 
@@ -101,7 +109,7 @@ sh-5.2#</pre>
 
         <div style="margin-top: 20px; margin-bottom: 20px;">
             <h3>current limitations</h3>
-            <p>currently needs Docker API version 1.46</p>
+            <p>currently needs Docker API version 1.46, <em>but you can "bypass" it by setting DOCKER_API_VERSION=1.46</em></p>
         </div>
 
         <div style="margin-top: 20px; margin-bottom: 20px;">
