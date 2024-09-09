@@ -3,7 +3,6 @@ package commands
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/albertoperdomo2/dockerbx/internal/config"
 	"github.com/docker/docker/api/types/container"
@@ -46,8 +45,6 @@ func runCreate(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	// Get user's home dir
-	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		fmt.Printf("Error getting user's home directory: %v\n", err)
 		return
@@ -66,8 +63,8 @@ func runCreate(cmd *cobra.Command, args []string) {
 			Mounts: []mount.Mount{
 				{
 					Type:   mount.TypeBind,
-					Source: config.Mounts.Source,
-					Target: config.Mounts.Target,
+					Source: config.Mounts[0].Source,
+					Target: config.Mounts[0].Target,
 				},
 			},
 		},
