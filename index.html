@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dockerbx</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <style>
+        body:not(.dark-mode) h1,
+        body:not(.dark-mode) h2,
+        body:not(.dark-mode) h3,
+        body:not(.dark-mode) h4,
+        body:not(.dark-mode) button {
+            color: #000000;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        body {
+            transition: background-color 0.3s, color 0.3s;
+            background-color: #f5f5dc;
+            color: #000000;
+        }
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+        .code-snippet {
+            border-radius: 8px;
+            padding: 15px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body:not(.dark-mode) .code-snippet {
+            background-color: #2b2b2b;
+            color: #ffffff;
+        }
+        body.dark-mode .code-snippet {
+            background-color: #f0f0f0;
+            color: #000000;
+        }
+        #mode-toggle {
+            background: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #mode-toggle:hover {
+            background-color: rgba(128, 128, 128, 0.2);
+        }
+        #mode-toggle:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+        }
+        body.dark-mode #mode-toggle:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+        }
+        #mode-toggle:focus:not(:focus-visible) {
+            outline: none;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+    <div style="padding: 20px;">
+        <div class="header">
+            <h1>dockerbx</h1>
+            <button id="mode-toggle">dark</button>
+        </div>
+        <p>a Docker-based alternative to toolbx, designed for macOS users who want to create and manage isolated development environments easily</p>
+        <div style="margin-top: 40px; margin-bottom: 40px;">
+            <h2>installation</h2>
+            <p>to install dockerbx go to the <a href="https://github.com/albertoperdomo2/dockerbx/releases" role="button">releases page</a> and download the binary for your system</p>
+        </div>
+        <div style="margin-top: 40px; margin-bottom: 40px;">
+            <h2>features</h2>
+            <ul>
+                <li>create isolated development environments using Docker containers</li>
+                <li>enter containers with a simple command</li>
+                <li>list all dockerbx containers</li>
+                <li>remove containers easily</li>
+                <li>run commands in containers without entering them</li>
+                <li>update container images and packages</li>
+                <li>seamless integration with the host file system</li>
+            </ul>
+        </div>
+
+        <pre class="code-snippet">[user@hostname ~]$ dockerbx create custom-fedora-env
+Container created: 6c9aa513a9e55f10601fa37d981d889515e6c04a3f1c4669df67eb3e669b5ac9
+Container custom-fedora-env is running</pre>
+
+        <pre class="code-snippet">[user@hostname ~]$ dockerbx enter custom-fedora-env
+sh-5.2#</pre>
+
+        <div style="margin-top: 20px; margin-bottom: 20px;">
+            <h3>current limitations</h3>
+            <p>currently needs Docker API version 1.46</p>
+        </div>
+
+        <div style="margin-top: 20px; margin-bottom: 20px;">
+            <a href="https://github.com/albertoperdomo2/dockerbx" role="button">view on GitHub</a>
+        </div>
+    </div>
+
+    <script>
+        const body = document.body;
+        const modeToggle = document.getElementById('mode-toggle');
+
+        modeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            modeToggle.textContent = body.classList.contains('dark-mode') ? 'light' : 'dark';
+        });
+    </script>
+</body>
+</html>
