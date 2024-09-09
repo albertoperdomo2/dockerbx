@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/albertoperdomo2/dockerbx/internal/config"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/image"
 	"github.com/docker/docker/api/types/mount"
@@ -28,13 +29,18 @@ func runCreate(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	containerName := "dockerbx-default" // set this in config?
+	config, err := config.LoadConfig()
+	if err != nil {
+		fmt.Printf("Error loading config: %v\n", err)
+		return
+	}
+
+	containerName := config.DefaultName
 	if len(args) > 0 {
 		containerName = args[0]
 	}
 
-	// Pull the latest Fedora image (this can be configured)
-	_, err = cli.ImagePull(ctx, "fedora:latest", image.PullOptions{})
+	_, err = cli.ImagePull(ctx, config.BaseImage, image.PullOptions{})
 	if err != nil {
 		fmt.Printf("Error pulling Fedora image: %v\n", err)
 		return
@@ -47,10 +53,9 @@ func runCreate(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	fmt.Println("Creating container...")
 	resp, err := cli.ContainerCreate(ctx,
 		&container.Config{
-			Image: "fedora:latest",
+			Image: config.BaseImage,
 			Cmd:   []string{"/bin/bash"},
 			Tty:   true,
 			Labels: map[string]string{
@@ -61,8 +66,8 @@ func runCreate(cmd *cobra.Command, args []string) {
 			Mounts: []mount.Mount{
 				{
 					Type:   mount.TypeBind,
-					Source: homeDir,
-					Target: "/home/user",
+					Source: config.Mounts.Source,
+					Target: config.Mounts.Target,
 				},
 			},
 		},
@@ -77,7 +82,6 @@ func runCreate(cmd *cobra.Command, args []string) {
 
 	fmt.Printf("Container created: %s\n", resp.ID)
 
-	fmt.Println("Starting container...")
 	if err := cli.ContainerStart(ctx, resp.ID, container.StartOptions{}); err != nil {
 		fmt.Printf("Error starting container: %v\n", err)
 		return

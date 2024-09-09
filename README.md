@@ -13,7 +13,7 @@
 
 ## Installation
 
-To install dockerbx, you need to have Go and Docker installed on your macOS system.
+To install `dockerbx`, you can just download the binary from the release page, or build the latest development version by yourself (you need to have Go and Docker installed on your macOS system).
 
 1. Clone the repository:
    ```
@@ -37,13 +37,23 @@ To install dockerbx, you need to have Go and Docker installed on your macOS syst
 
 ## Usage
 
+### Initialize dockerbx
+
+Before using dockerbx, run the init command:
+
+```
+dockerbx init
+```
+
+This will set up the necessary Docker images and configurations.
+
 ### Create a new container
 
 ```
 dockerbx create [container_name]
 ```
 
-If no name is provided, it will use "dockerbx-default".
+If no name is provided, it will use the default name from the config file.
 
 ### Enter a container
 
@@ -70,6 +80,27 @@ dockerbx rm [container_name...]
 Remove one or more containers. Use flags for additional options:
 - `-f` or `--force`: Force removal of running containers
 - `-a` or `--all`: Remove all dockerbx containers
+
+### Run a command in a container
+
+```
+dockerbx run [container_name] [command]
+```
+
+Executes a command in the specified container without entering it.
+
+### Update a container
+
+```
+dockerbx update [container_name]
+```
+
+Updates the container's base image and optionally updates packages within the container.
+Use the `-p` or `--packages` flag to update packages.
+
+## Configuration
+
+The configuration file is located at `~/.config/dockerbx/dockerbx.yaml`. You can modify this file to change default settings.
 
 ## Development
 

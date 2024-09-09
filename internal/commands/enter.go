@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 
+	"github.com/albertoperdomo2/dockerbx/internal/config"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
@@ -23,7 +24,14 @@ func EnterCmd() *cobra.Command {
 
 func runEnter(cmd *cobra.Command, args []string) {
 	ctx := context.Background()
-	containerName := "dockerbx-default"
+
+	config, err := config.LoadConfig()
+	if err != nil {
+		fmt.Printf("Error loading config: %v\n", err)
+		return
+	}
+
+	containerName := config.DefaultName
 	if len(args) > 0 {
 		containerName = args[0]
 	}
