@@ -69,7 +69,7 @@ func runEnter(cmd *cobra.Command, args []string) {
 		AttachStdout: true,
 		AttachStderr: true,
 		Tty:          true,
-		Cmd:          []string{"/bin/sh"}, // change this
+		Cmd:          []string{"/bin/bash", "--rcfile", "/etc/bashrc"},
 	}
 
 	execID, err := cli.ContainerExecCreate(ctx, containerName, execConfig)

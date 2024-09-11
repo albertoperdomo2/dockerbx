@@ -58,6 +58,7 @@ func runCreate(cmd *cobra.Command, args []string) {
 			Labels: map[string]string{
 				"owned_by": "dockerbx",
 			},
+			Env: []string{"PS1=\\[\\e[1;30m\\]⬢\\[\\e[0m\\][\\u@dockerbx \\W]\\$ "},
 		},
 		&container.HostConfig{
 			Mounts: []mount.Mount{
