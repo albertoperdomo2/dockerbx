@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/albertoperdomo2/dockerbx/internal/config"
+	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/image"
 	"github.com/docker/docker/api/types/mount"
@@ -13,11 +14,15 @@ import (
 )
 
 func CreateCmd() *cobra.Command {
-	return &cobra.Command{
+	cmd := &cobra.Command{
 		Use:   "create [container_name]",
 		Short: "Create a new container",
 		Run:   runCreate,
 	}
+
+	cmd.Flags().String("clone", "", "Git repository URL to clone")
+
+	return cmd
 }
 
 func runCreate(cmd *cobra.Command, args []string) {
@@ -58,6 +63,7 @@ func runCreate(cmd *cobra.Command, args []string) {
 			Labels: map[string]string{
 				"owned_by": "dockerbx",
 			},
+			Env: []string{"PS1=\\[\\e[32m\\]⬢\\[\\e[0m\\][\\u@dockerbx](\\W)\\$ "},
 		},
 		&container.HostConfig{
 			Mounts: []mount.Mount{
@@ -85,4 +91,21 @@ func runCreate(cmd *cobra.Command, args []string) {
 	}
 
 	fmt.Printf("Container %s is running\n", containerName)
+
+	cloneURL, _ := cmd.Flags().GetString("clone")
+	if cloneURL != "" {
+		cloneCmd := fmt.Sprintf("git clone %s /app", cloneURL)
+		execResp, err := cli.ContainerExecCreate(ctx, resp.ID, types.ExecConfig{
+			Cmd: []string{"/bin/sh", "-c", cloneCmd},
+		})
+		if err != nil {
+			fmt.Printf("Error creating clone command: %v\n", err)
+			return
+		}
+		if err := cli.ContainerExecStart(ctx, execResp.ID, types.ExecStartCheck{}); err != nil {
+			fmt.Printf("Error starting clone: %v\n", err)
+			return
+		}
+		fmt.Printf("Repository cloned: %s\n", cloneURL)
+	}
 }

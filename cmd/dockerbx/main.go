@@ -23,12 +23,15 @@ func main() {
 	}
 
 	rootCmd.AddCommand(commands.CreateCmd())
+	rootCmd.AddCommand(commands.PythonCmd())
 	rootCmd.AddCommand(commands.EnterCmd())
 	rootCmd.AddCommand(commands.ListCmd())
 	rootCmd.AddCommand(commands.RemoveCmd())
 	rootCmd.AddCommand(commands.RunCmd())
 	rootCmd.AddCommand(commands.UpdateCmd())
 	rootCmd.AddCommand(commands.InitCmd())
+	rootCmd.AddCommand(commands.ExportConfigCmd())
+	rootCmd.AddCommand(commands.ImportConfigCmd())
 	rootCmd.AddCommand(versionCmd())
 
 	if err := rootCmd.Execute(); err != nil {

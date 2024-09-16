@@ -4,18 +4,14 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/docker/docker/api/types/mount"
 	"gopkg.in/yaml.v2"
 )
 
 type Config struct {
-	BaseImage   string  `yaml:"base_image"`
-	DefaultName string  `yaml:"default_name"`
-	Mounts      []Mount `yaml:"mounts"`
-}
-
-type Mount struct {
-	Source string `yaml:"source"`
-	Target string `yaml:"target"`
+	BaseImage   string        `yaml:"base_image"`
+	DefaultName string        `yaml:"default_name"`
+	Mounts      []mount.Mount `yaml:"mounts"`
 }
 
 func LoadConfig() (*Config, error) {
