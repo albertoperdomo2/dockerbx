@@ -10,6 +10,9 @@
 - Remove containers easily, with options for force removal and bulk operations
 - Seamless integration with the host file system
 - Based on Fedora images for a familiar Linux environment
+- Python environment setup with custom versions and package management
+- Direct repository cloning into containers
+- Configuration import/export for easy sharing and replication
 
 ## Installation
 
@@ -50,10 +53,18 @@ This will set up the necessary Docker images and configurations.
 ### Create a new container
 
 ```
-dockerbx create [container_name]
+dockerbx create [container_name] [--clone <repository_url>]
 ```
 
-If no name is provided, it will use the default name from the config file.
+If no name is provided, it will use the default name from the config file. Use the `--clone` flag to clone a Git repository into the container.
+
+### Create a Python environment
+
+```
+dockerbx python [container_name] --version <python_version> --venv <venv_name> --packages <package1> <package2> --requirements <path_to_requirements.txt>
+```
+
+Creates a Python-specific container with the specified version, virtual environment, and packages.
 
 ### Enter a container
 
@@ -98,9 +109,35 @@ dockerbx update [container_name]
 Updates the container's base image and optionally updates packages within the container.
 Use the `-p` or `--packages` flag to update packages.
 
+### Export configuration
+
+```
+dockerbx export-config [file_name]
+```
+
+Exports the current configuration to a YAML file.
+
+### Import configuration
+
+```
+dockerbx import-config <file_name>
+```
+
+Imports a configuration from a YAML file.
+
 ## Configuration
 
-The configuration file is located at `~/.config/dockerbx/dockerbx.yaml`. You can modify this file to change default settings.
+The configuration file is located at `~/.config/dockerbx/dockerbx.yaml`. You can modify this file to change default settings. Here's an example configuration:
+
+```yaml
+base_image: "ubuntu:20.04"
+default_name: "dockerbx-default"
+mounts:
+  - type: "bind"
+    source: "/home/user/projects"
+    target: "/projects"
+    read_only: false
+```
 
 ## Development
 
