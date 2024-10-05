@@ -21,6 +21,7 @@ func CreateCmd() *cobra.Command {
 	}
 
 	cmd.Flags().String("clone", "", "Git repository URL to clone")
+	cmd.Flags().String("image", "", "Image to use, default is in the config")
 
 	return cmd
 }
@@ -44,20 +45,21 @@ func runCreate(cmd *cobra.Command, args []string) {
 		containerName = args[0]
 	}
 
-	_, err = cli.ImagePull(ctx, config.BaseImage, image.PullOptions{})
-	if err != nil {
-		fmt.Printf("Error pulling Fedora image: %v\n", err)
-		return
-	}
-
-	if err != nil {
-		fmt.Printf("Error getting user's home directory: %v\n", err)
-		return
+	baseImage := config.BaseImage
+	customImage, _ := cmd.Flags().GetString("image")
+	if customImage != "" {
+		baseImage = customImage
+	} else {
+		_, err = cli.ImagePull(ctx, baseImage, image.PullOptions{})
+		if err != nil {
+			fmt.Printf("Error pulling Fedora image: %v\n", err)
+			return
+		}
 	}
 
 	resp, err := cli.ContainerCreate(ctx,
 		&container.Config{
-			Image: config.BaseImage,
+			Image: baseImage,
 			Cmd:   []string{"/bin/bash"},
 			Tty:   true,
 			Labels: map[string]string{
