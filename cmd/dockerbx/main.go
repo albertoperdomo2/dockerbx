@@ -23,6 +23,7 @@ func main() {
 	}
 
 	rootCmd.AddCommand(commands.CreateCmd())
+	rootCmd.AddCommand(commands.BuildCmd())
 	rootCmd.AddCommand(commands.PythonCmd())
 	rootCmd.AddCommand(commands.EnterCmd())
 	rootCmd.AddCommand(commands.ListCmd())
