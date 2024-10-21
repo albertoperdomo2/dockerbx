@@ -9,7 +9,13 @@ build:
 
 .PHONY: install
 install: build
-	mv $(BINARY_NAME) /usr/local/bin/
+	@if [ "$$(id -u)" != "0" ]; then \
+		echo "Installing to /usr/local/bin requires root privileges. Using sudo:"; \
+		sudo mv $(BINARY_NAME) /usr/local/bin/; \
+	else \
+		mv $(BINARY_NAME) /usr/local/bin/; \
+	fi
+	@echo "Installation complete. You can now use '$(BINARY_NAME)' command."
 
 .PHONY: clean
 clean:
